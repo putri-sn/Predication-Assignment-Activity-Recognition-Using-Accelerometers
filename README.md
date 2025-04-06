@@ -15,54 +15,65 @@ In this task, accelerometer data is used to predict how subjects perform weightl
 
 `library(ggplot2)`
 
-set.seed(1234)
+`set.seed(1234)`
 
-#Load data
-trainUrl <- "https://d396qusza40orc.cloudfront.net/predmachlearn/pml-training.csv"
-testUrl <- "https://d396qusza40orc.cloudfront.net/predmachlearn/pml-testing.csv"
+`#Load data`
+`trainUrl <- "https://d396qusza40orc.cloudfront.net/predmachlearn/pml-training.csv"`
+
+`testUrl <- "https://d396qusza40orc.cloudfront.net/predmachlearn/pml-testing.csv"`
 
 training <- read.csv(url(trainUrl), na.strings = c("NA", "#DIV/0!", ""))
 testing  <- read.csv(url(testUrl), na.strings = c("NA", "#DIV/0!", ""))
  
- Data Cleaning
+**Data Cleaning**
  
-# Remove columns with mostly NA values
-training <- training[, colSums(is.na(training)) == 0]
+`# Remove columns with mostly NA values`
+
+`training <- training[, colSums(is.na(training)) == 0]`
  
-# Remove irrelevant columns (IDs, timestamps)
-training <- training[, -(1:7)]
+`# Remove irrelevant columns (IDs, timestamps)`
+
+`training <- training[, -(1:7)]`
  
-# Make sure classe is a factor
-training$classe <- as.factor(training$classe)
+`# Make sure classe is a factor`
+
+`training$classe <- as.factor(training$classe)`
  
-# Same cleanup for testing
-testing <- testing[, colnames(testing) %in% colnames(training)]
+`# Same cleanup for testing`
+
+`testing <- testing[, colnames(testing) %in% colnames(training)]`
  
-Partition the Training Set
+**Partition the Training Set**
  
-inTrain <- createDataPartition(training$classe, p = 0.7, list = FALSE)
-trainSet <- training[inTrain, ]
-testSet <- training[-inTrain, ]
+`inTrain <- createDataPartition(training$classe, p = 0.7, list = FALSE)`
+
+`trainSet <- training[inTrain, ]`
+
+`testSet <- training[-inTrain, ]`
  
-Train a Random Forest Model
+**Train a Random Forest Model**
  
-control <- trainControl(method = "cv", number = 5)
-modelRF <- train(classe ~ ., data = trainSet, method = "rf", trControl = control)
+`control <- trainControl(method = "cv", number = 5)`
+
+`modelRF <- train(classe ~ ., data = trainSet, method = "rf", trControl = control)`
  
-Model Accuracy
+**Model Accuracy**
  
-predictions <- predict(modelRF, testSet)
-confusionMatrix(predictions, testSet$classe)
+`predictions <- predict(modelRF, testSet)`
+
+`confusionMatrix(predictions, testSet$classe)`
  
-Predict 20 Test Cases
+**Predict 20 Test Cases**
  
-finalPredictions <- predict(modelRF, testing)
-finalPredictions
+`finalPredictions <- predict(modelRF, testing)`
+
+`finalPredictions`
  
-Out-of-Sample Error Estimate
+**Out-of-Sample Error Estimate**
+
 Based on cross-validation and evaluation on the holdout testSet, the out-of-sample error is approximately:
  
-1 - confusionMatrix(predictions, testSet$classe)$overall['Accuracy']
+`1 - confusionMatrix(predictions, testSet$classe)$overall['Accuracy']`
  
 **Conclusion**
 
