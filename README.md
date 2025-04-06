@@ -5,17 +5,19 @@ In this task, accelerometer data is used to predict how subjects perform weightl
 
 **Load Libraries and Data**
 
+`library(caret)`
 
+`library(randomForest)`
 
-library(caret)
-library(randomForest)
-library(rpart)
-library(rpart.plot)
-library(ggplot2)
+`library(rpart)`
+
+`library(rpart.plot)`
+
+`library(ggplot2)`
 
 set.seed(1234)
 
-# Load data
+#Load data
 trainUrl <- "https://d396qusza40orc.cloudfront.net/predmachlearn/pml-training.csv"
 testUrl <- "https://d396qusza40orc.cloudfront.net/predmachlearn/pml-testing.csv"
 
