@@ -1,22 +1,27 @@
 # Predication-Assignment-Activity-Recognition-Using-Accelerometers
-Introduction
+**Introduction**
+
 In this task, accelerometer data is used to predict how subjects perform weightlifting exercises. The goal is to build a model that can accurately classify 20 test cases. This will use the Random Forest model, which is well suited for high-dimensional classification problems. The data comes from accelerometers on the belt, forearm, arm, and dumbbell of 6 participants.
-Load Libraries and Data
- 
+
+**Load Libraries and Data**
+
+
+
 library(caret)
 library(randomForest)
 library(rpart)
 library(rpart.plot)
 library(ggplot2)
- 
+
 set.seed(1234)
- 
+
 # Load data
 trainUrl <- "https://d396qusza40orc.cloudfront.net/predmachlearn/pml-training.csv"
 testUrl <- "https://d396qusza40orc.cloudfront.net/predmachlearn/pml-testing.csv"
- 
+
 training <- read.csv(url(trainUrl), na.strings = c("NA", "#DIV/0!", ""))
 testing  <- read.csv(url(testUrl), na.strings = c("NA", "#DIV/0!", ""))
+ 
  Data Cleaning
  
 # Remove columns with mostly NA values
@@ -57,6 +62,6 @@ Based on cross-validation and evaluation on the holdout testSet, the out-of-samp
  
 1 - confusionMatrix(predictions, testSet$classe)$overall['Accuracy']
  
-Conclusion
-Random Forest model to predict activity classes using accelerometer data. The model achieved high accuracy on the validation set and was used to predict 20 test cases for the final quiz submission.
+**Conclusion**
 
+Random Forest model to predict activity classes using accelerometer data. The model achieved high accuracy on the validation set and was used to predict 20 test cases for the final quiz submission.
