@@ -1,4 +1,4 @@
-# Predication-Assignment-Activity-Recognition-Using-Accelerometers
+# Prediction-Assignment-Activity-Recognition-Using-Accelerometers
 **Author:** Putri SN
 
 ## **Introduction**
