@@ -1,0 +1,44 @@
+---
+title: "Prediction Assignment: Activity Recognition Using Accelerometers"
+author: "Putri SN"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(caret)
+library(randomForest)
+library(rpart)
+library(ggplot2)
+library(dplyr)
+# Training and test datasets
+train_url <- "https://d396qusza40orc.cloudfront.net/predmachlearn/pml-training.csv"
+test_url <- "https://d396qusza40orc.cloudfront.net/predmachlearn/pml-testing.csv"
+
+train_data <- read.csv(train_url, na.strings = c("NA", "", "#DIV/0!"))
+test_data <- read.csv(test_url, na.strings = c("NA", "", "#DIV/0!"))
+# Remove near-zero variance predictors
+nzv <- nearZeroVar(train_data)
+train_data <- train_data[ , -nzv]
+# Remove columns with too many NA values
+train_data <- train_data[, colSums(is.na(train_data)) == 0]
+# Remove ID and timestamp variables (first 5 columns)
+train_data <- train_data[, -c(1:5)]
+# Apply same preprocessing to test_data
+test_data <- test_data[, names(test_data) %in% names(train_data)]
+
+set.seed(123)
+inTrain <- createDataPartition(train_data$classe, p = 0.7, list = FALSE)
+train_set <- train_data[inTrain, ]
+validation_set <- train_data[-inTrain, ]
+
+control <- trainControl(method = "cv", number = 5)
+rf_model <- train(classe ~ ., data = train_set, method = "rf", trControl = control)
+rf_model
+
+predictions <- predict(rf_model, validation_set)
+confusionMatrix(predictions, validation_set$classe)
+
+1 - confusionMatrix(predictions, validation_set$classe)$overall["Accuracy"]
+final_predictions <- predict(rf_model, test_data)
+final_predictions
